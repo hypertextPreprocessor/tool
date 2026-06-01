@@ -177,6 +177,7 @@ func StreamDecryptCTR(src io.Reader, dst io.Writer, key []byte) error {
 func main() {
 	var sFlag = flag.String("type","text","请输入加密类型(text | file | bulkFile)")
 	var sVal = flag.String("val","","输入文件路径或明文信息")
+	var sName = flag.String("name","Program","输出生成的文件名")
 	flag.Parse()
 	key := []byte("QqH3+847'39(8#37djOvhfjlsi%kf@=]") // 32字节密钥 (AES-256)
 
@@ -200,7 +201,7 @@ func main() {
 			encrypted,err := EncryptAESCBCBinary(bs, key)
 			if err != nil { return }
 			dstPath,_ := os.Getwd()
-			if os.WriteFile(path.Join(dstPath,"file"), encrypted, 0644) !=nil {
+			if os.WriteFile(path.Join(dstPath,*sName), encrypted, 0644) !=nil {
 				fmt.Println("error")
 				return
 			}
@@ -213,7 +214,7 @@ func main() {
 		}else{
 			inputFile,_ := os.Open(*sVal)
 			defer inputFile.Close()
-			outputFile,_ := os.Create("Kaiyuan")
+			outputFile,_ := os.Create(*sName)
 			defer outputFile.Close()
 			err := StreamEncryptCTR(inputFile,outputFile,key)
 			//err := StreamDecryptCTR(inputFile,outputFile,key)
