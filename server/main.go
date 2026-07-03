@@ -75,6 +75,6 @@ func main(){
 	fs := http.FileServer(http.Dir("/Users/youyou/Documents/practica/学前教育项目/cp/"))
 	//http.Handle("/cp/",http.StripPrefix("/cp/",fs))
 	r.PathPrefix("/cp/").Handler(http.StripPrefix("/cp/",fs))
-	fmt.Println("Server start at :80...")
-	http.ListenAndServe(":80",r)
+	fmt.Println("Server start at :3333...")
+	http.ListenAndServe(":3333",r)
 }
