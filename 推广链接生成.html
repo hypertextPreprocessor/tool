@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my site</title>
+    <link rel="stylesheet" href="styles.css">
+	
+	<style>
+	body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+	background-color:black;
+	font-size:62.5%;
+	color:white;
+}
+
+.bg-image {
+    background-image: url('back.png');
+        background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity to control the blur effect */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    text-align: center;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+}
+body{
+display:flex;
+flex-flow:row nowrap;
+align-items:center;
+justify-content:center;
+}
+.content{
+    font-size: 20px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+.form{
+	display:flex;
+	flex-flow:column nowrap;
+	align-items:flex-start;
+}
+.output{
+    background-color: #ffffff;
+    width: 100%;
+    min-height: 220px;
+    padding: 8px;
+    display: flex;
+	flex-flow:column wrap;
+    color: black;
+	margin-top:20px;
+	align-items: flex-start;
+    justify-content: space-around;
+}
+.form input[type="text"]{
+	padding:8px;
+	min-width:320px;
+}
+.form input[type="radio"]{
+	width:20px;
+	height:20px;
+}
+.form select{
+	padding:8px;
+	min-width:120px;
+}
+.radiogroup{
+	display: flex;
+    flex-flow: row nowrap;
+    gap: 22px;
+	width:100%;
+}
+.radiogroup>p{flex:1;cursor:pointer;}
+.radiogroup>p *{
+	pointer-events:none;
+}
+button#make{
+	height:45px;
+	position:relative;
+	width: 300px;
+    padding:0;
+	margin:0;
+    background: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 9px;
+	overflow:hidden;
+    box-shadow: 10px 8px 10px 1px #ffffff7d;
+    transition: all 0.3s 0s ease-in-out;
+}
+button>p{
+	overflow:hidden;
+	padding:0px;
+	margin:0;
+	transition: all 0.3s 0s ease-in-out;
+
+	/*transform: translateY(50px);*/
+}
+button>p>span{
+	padding:8px;
+	margin:0;
+	display:block;
+}
+button>p>span:nth-of-type(1){
+	background:linear-gradient(to right, #e4e4e4, #7a7a7a);
+}
+button>p:hover{
+	transform: translateY(-50px);
+	
+}
+button#make:hover{
+	box-shadow: -7px -5px 10px 1px #ffffff7d;
+}
+
+	</style>
+</head>
+<body>
+	<div class="content">
+		<h1>推广链接生成</h1>
+		<div class="form">
+			<p>
+				<label for="domain">推广域名</label>
+				<input name="domain" type="text" id="domain" placeholder="末尾带不带斜杠（/）都一样"/>
+			</p>
+			<p>
+				<label for="pixelId">像素id</label>
+				<input name="pixelId" type="text" id="pixelId" placeholder=""/>
+			</p>
+			<p>
+				<label for="platform">推广平台</label>
+				<select name="platform" id="platform">
+					<option value="fb">Facebook</option>
+					<option value="kwai">快手</option>
+					<option value="tikTok">tikTok</option>
+					<option value="twq">X</option>
+				</select>
+			</p>
+			<div style="width:100%;">
+				<p>是否单独做安装统计?</p>
+				<div class="radiogroup">
+					<p>
+						<input type="radio" id="si" name="install" value="true"/>
+						<label for="si">是</label>
+					</p>
+					<p>
+						<input type="radio" id="no" name="install" value="false"/>
+						<label for="no">否</label>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div><button id="make">
+			<p>
+				<span>生成</span>
+				<span>生成</span>
+			</p>
+		</button></div>
+		<div class="output">
+			
+		</div>
+	</div>
+	<script>
+		
+		var si = document.querySelector("#si");
+		var no = document.querySelector("#no");
+		var radio1 = document.querySelector(".radiogroup>p:nth-of-type(1)");
+		var radio2 = document.querySelector(".radiogroup>p:nth-of-type(2)");
+		
+		var domain = document.querySelector("#domain");
+		var pixelId = document.querySelector("#pixelId");
+		var platform = document.querySelector("#platform");
+		var make = document.querySelector("#make");
+		var output = document.querySelector(".output");
+		
+		radio1.onclick=function(){
+			si.checked = !si.checked 
+		}
+		radio2.onclick=function(){
+			no.checked = !no.checked 
+		}
+		domain.onchange=function(e){
+			//console.log(e);
+		}
+		
+		make.onclick=function(){
+			if(domain.value){
+				var url = domain.value.trim();
+				if(url){
+					url = url.replaceAll(" ","");
+					if(/^http(s)?:\/\//.test(url)){
+						if(pixelId.value){
+							var pid = pixelId.value.trim();
+							if(pid){
+								var U,u;
+								pid = pid.replaceAll(" ","");
+								var pt = platform.selectedOptions[0].value;
+								if(si.checked){
+									U = `${url}?type={${pt}:${pid},set:true}`;
+									u = `${url}${encodeURI(`?type={${pt}:${pid},set:true}`)}`
+								}else{
+									U = `${url}?type={${pt}:${pid}}`;
+									u = `${url}${encodeURI(`?type={${pt}:${pid}}`)}`;
+								}
+								var P = document.createElement("p");
+								var p = document.createElement("p");
+								P.textContent = U;
+								p.textContent = u;
+								output.appendChild(P);
+								output.appendChild(p);
+							}else{
+								alert("像素id是空白")
+							}
+						}else{
+							alert("像素id还没填");
+						}
+					}else{
+						alert("规范填写网站链接,http://或者https://开头！")
+					}
+				}else{
+					alert("推广域名不要填空白")
+				}
+				/*
+				if(!/^\s+$/.test(domain.value)){
+					
+				}else{
+					alert("推广域名不要填空白")
+				}
+				*/
+			}else{
+				alert("推广域名没填")
+			}
+		}
+	</script>
+</body>
+</html>
